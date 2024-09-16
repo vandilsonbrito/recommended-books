@@ -1,8 +1,11 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useAuthContext } from "@/context/AuthContext";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
  
 export default function UserNav() {
+
+    const { userAuth, logout } = useAuthContext();
 
     return (
         <DropdownMenu>
@@ -27,7 +30,7 @@ export default function UserNav() {
 
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>
-                    <Link href="/" className="w-full">Logout</Link> {/* LOG OUT */}
+                    <Link href="/" className="w-full" onClick={() => logout()}>Logout</Link> {/* LOG OUT */}
                 </DropdownMenuItem>
             </DropdownMenuContent>
 

@@ -19,7 +19,7 @@ import {
 import { useAuthContext } from "@/context/AuthContext";
 
 
-export default function TestComponent() {
+export default function Books() {
     const { userAuth, logout } = useAuthContext();
 
     const [booksData, setBooksData] = useState<BooksDataType[]>([]);

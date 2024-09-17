@@ -78,68 +78,72 @@ export default function Books() {
 
     return (
         userAuth ?
-        <>
+        (<div>
           <Header />
           <main className="w-full h-full min-h-screen flex flex-col justify-center items-center text-xl py-8 bg-white">
-              <ul className="w-full h-full flex flex-wrap gap-5 justify-center items-center px-10">
-                  {
-                    booksData ?
-                    (
-                      booksData.map((book) => (
-                        <li className="w-[249px] h-full relative" key={book.id}>
-                            <div className="absolute top-2 right-2 text-2xl text-blue-900 cursor-pointer">
-                              <IoIosStarOutline />
-                            </div>
-                            <div className="w-[249px] h-[249px] flex justify-center items-center py-2 bg-slate-100 rounded-t-md">
-                                <Image 
-                                  src={book.imageUrl} 
-                                  alt={book.title} 
-                                  width={140}
-                                  height={160}
-                                  />
-                            </div>
-                            <div className="w-[249px] h-[150px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
-                                <div className="text-sm my-1 font-medium">
-                                    <h2 className='text-base font-semibold line-clamp-2'>{book.title}</h2>
-                                    <p className='py-1'>Author: {book.author}</p>
-                                    
-                                    <HoverCard>
-                                      <HoverCardTrigger>
-                                        <div className="flex items-center text-lg text-yellow-400 cursor-pointer">
-                                          {starsArr[book.id] && starsArr[book.id].map((star, index) => <span key={index}>{star}</span>)}
-                                        </div>
-                                      </HoverCardTrigger>
-                                      <HoverCardContent>
-                                        <p>Rating: <strong>{book.rating}</strong> out of <strong>5</strong></p>
-                                      </HoverCardContent>
-                                    </HoverCard>
-                                </div>
-                                {/* <Button asChild className='w-full self-end'>
-                                      <Link 
-                                          className=''
-                                          href={book.linkToBuy} 
-                                          target="_blank" 
-                                          rel="noopener noreferrer"
-                                          >Buy Here
-                                        </Link>
-                                </Button> */}
-                            </div>
-                        </li>
-                      ))
-                    ) 
-                    : 
-                    (
-                      <></>
-                    )
-
-                  }
-              </ul>
+              <div className="w-full h-full flex flex-col justify-center items-center px-10 lg:px-14">
+                <ul className="will-change-contents h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-center mx-auto">
+                    {
+                      booksData ?
+                      (
+                        booksData.map((book) => (
+                          <li className="w-[249px] h-full relative" key={book.id}>
+                              <div className="absolute top-2 right-2 text-2xl text-blue-900 cursor-pointer">
+                                <IoIosStarOutline />
+                              </div>
+                              <div className="w-[249px] h-[249px] flex justify-center items-center py-2 bg-slate-100 rounded-t-md">
+                                  <Image
+                                    src={book.imageUrl}
+                                    alt={book.title}
+                                    width={140}
+                                    height={160}
+                                    className=''
+                                    />
+                              </div>
+                              <div className="w-[249px] h-[150px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
+                                  <div className="text-sm my-1 font-medium">
+                                      <h2 className='text-base font-semibold line-clamp-2'>{book.title}</h2>
+                                      <p className='py-1'>Author: {book.author}</p>
+                
+                                      <HoverCard>
+                                        <HoverCardTrigger>
+                                          <div className="flex items-center text-lg text-yellow-400 cursor-pointer">
+                                            {starsArr[book.id] && starsArr[book.id].map((star, index) => <span key={index}>{star}</span>)}
+                                          </div>
+                                        </HoverCardTrigger>
+                                        <HoverCardContent>
+                                          <p>Rating: <strong>{book.rating}</strong> out of <strong>5</strong></p>
+                                        </HoverCardContent>
+                                      </HoverCard>
+                                  </div>
+                                  {/* <Button asChild className='w-full self-end'>
+                                        <Link
+                                            className=''
+                                            href={book.linkToBuy}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            >Buy Here
+                                          </Link>
+                                  </Button> */}
+                              </div>
+                          </li>
+                        ))
+                      )
+                      :
+                      (
+                        <div className="w-full h-svh flex flex-col items-center justify-center">
+                            <p>Something went wrong. Please refresh.</p>
+                        </div>
+                      )
+                    }
+                </ul>
+              </div>
               <ScrollToTop/>
           </main>
-        </>
+        </div>)
         :
-        <div className="w-full h-svh flex flex-col items-center justify-center">
+        (<div className="w-full h-svh flex flex-col items-center justify-center">
             <p>You need to sign in.</p>
-        </div>
+        </div>)
     );
 }

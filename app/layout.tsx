@@ -8,7 +8,7 @@ import { AuthContextProvider } from "@/context/AuthProvider";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Recommended Book",
+  title: "Recommended Books",
   description: "The place you find the best books - Recommended Book",
 };
 

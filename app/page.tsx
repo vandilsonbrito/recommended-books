@@ -60,7 +60,7 @@ export default function Home() {
         }
 
         console.log(result);
-        return router.push('/books');
+        return router.push('/favorite-genres');
     }
     
  

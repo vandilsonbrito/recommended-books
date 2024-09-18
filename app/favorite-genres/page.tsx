@@ -23,14 +23,20 @@ const FavoriteGenres: React.FC = () => {
 
     // Criar lógica para receber dados de preferencias do DB e setar o estados e inputs pra checked
     useEffect(() => {
-        const allGenreCheckInputs = document.querySelectorAll('form input[type="checkbox"]');
-        console.log("allGenreCheckInputs", allGenreCheckInputs)
-        if(userDB?.preferences){
-            console.log(userDB.preferences);
-            const checkboxInputsEqualDBPreferences = Array.from(allGenreCheckInputs).filter((input) => (userDB.preferences).some((genre) => input.id === genre));
-            console.log("checkboxInputsEqualDBPreferences", checkboxInputsEqualDBPreferences);
-            checkboxInputsEqualDBPreferences.forEach((input) => input.checked = true);
+        
+        const allGenreCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');
+
+        if (userDB?.preferences) {
+            
+            const checkboxInputsEqualDBPreferences = Array.from(allGenreCheckInputs).filter((input) => 
+                userDB.preferences.some((genre) => input.id === genre)
+            ) as HTMLInputElement[]; 
+
+            checkboxInputsEqualDBPreferences.forEach((input) => {
+                input.checked = true; 
+            });
         }
+
     }, [userDB?.preferences])
 
     return (

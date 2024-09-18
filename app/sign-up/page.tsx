@@ -19,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
  
 const formSchema = z.object({
     name: z.string().min(3, {
@@ -59,10 +60,11 @@ export default function UserSignUp() {
             setWasLoginButtonClicked(true);
         }
 
+        if(result && result.user) {
+            setWasLoginButtonClicked(false);
+            return router.push('/favorite-genres');
         }
 
-        console.log(result);
-        return router.push('/books');
     }
     
  

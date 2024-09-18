@@ -10,9 +10,9 @@ export default function Header() {
           <Image 
               src={Logo} 
               alt="Logo"
-              className='w-20'
+              className='w-16 md:w-20'
           />
-          <h1 className='text-lg font-medium text-white'>The best recommended books for you</h1>
+          <h1 className='hidden md:block text-lg font-medium text-white'>The best recommended books for you</h1>
           <nav className='text-white'>
               <UserNav/>
           </nav>

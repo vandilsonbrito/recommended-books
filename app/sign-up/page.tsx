@@ -31,6 +31,8 @@ const formSchema = z.object({
 })
  
 export default function UserSignUp() {
+    
+    const [errorMessage, setErrorMessage] = useState('');
     const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -48,7 +50,15 @@ export default function UserSignUp() {
         const { result, error } = await SignUp(values.email, values.password);
 
         if(error) {
-          return console.log(error);
+            if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/email-already-in-use'){
+                setErrorMessage('Esse email já está cadastrado');
+            }
+            return console.log(error);
+        }
+        else {
+            setWasLoginButtonClicked(true);
+        }
+
         }
 
         console.log(result);
@@ -114,6 +124,8 @@ export default function UserSignUp() {
                             </FormItem>
                             )}
                         />
+                        { errorMessage && <p className="text-red-600 tex-center">{errorMessage}</p> }
+
                         <Button
                             className="w-full py-5"
                             type="submit"

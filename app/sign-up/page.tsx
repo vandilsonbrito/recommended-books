@@ -31,6 +31,7 @@ const formSchema = z.object({
 })
  
 export default function UserSignUp() {
+    const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -62,8 +63,13 @@ export default function UserSignUp() {
             alt="Logo"
             className='w-24 pb-5'
             />
-            <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white">
+            <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white relative">
                 <Form {...form}>
+
+                    <div className={`w-full h-[480px] bg-[#e2e0e06e] text-white ${wasLoginButtonClicked ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
+                        <p className="loader"></p>
+                    </div>
+
                     <h1 className="font-medium text-xl pb-6">Olá. Cadastre-se.</h1>
                     <form
                     onSubmit={form.handleSubmit(onSubmit)}

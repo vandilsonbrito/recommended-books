@@ -47,7 +47,7 @@ export default function UserSignUp() {
   
     async function onSubmit(values: z.infer<typeof formSchema>) {
     
-        const { result, error } = await SignUp(values.email, values.password);
+        const { result, error } = await SignUp(values.name, values.email, values.password);
 
         if(error) {
             if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/email-already-in-use'){

@@ -6,8 +6,8 @@ import { ref, onValue, off } from "firebase/database";
 import { BooksDataType } from '@/utils/interfaces';
 import Header from "../components/Header";
 import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+/* import Link from 'next/link';
+import { Button } from '@/components/ui/button'; */
 import ScrollToTop from '../components/ScrollToTop';
 import { MdOutlineStarPurple500, MdOutlineStarHalf } from "react-icons/md";
 import { IoIosStarOutline } from "react-icons/io";
@@ -17,29 +17,41 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { useAuthContext } from "@/context/AuthContext";
+import Link from 'next/link';
 
 
 export default function Books() {
-    const { userAuth, logout } = useAuthContext();
+
+    const { userAuth, userDB } = useAuthContext();
 
     const [booksData, setBooksData] = useState<BooksDataType[]>([]);
     const [starsArr, setStarsArr] = useState<React.ReactElement[][]>([]);
+    const [filteredBooks, setFilteredBooks] = useState<BooksDataType[]>([]);
 
+    // Get books data from DB
     useEffect(() => { 
-        const testRef = ref(database, 'books'); // Teste com um caminho diferente
+        const booksRef = ref(database, 'books'); 
         const fetchData = () => {
-            onValue(testRef, (snapshot) => {
+            onValue(booksRef, (snapshot) => {
                 const fetchedData = snapshot.val();
                 setBooksData(fetchedData);
             });
         };
         fetchData(); 
 
-        // Limpar o listener quando o componente desmontar
+        // Clean listener when component unmount
         return () => {
-            off(testRef); 
+            off(booksRef); 
         };
     }, []);
+
+    useEffect(() => {
+      if(userDB && userDB.preferences && (Object.values(userDB.preferences)).length > 0) {
+        console.log("userDB", userDB.preferences)
+        const selectedBooks = booksData.filter(book => (Object.values(userDB.preferences)).some(genre => book.genre.includes(genre))); 
+        setFilteredBooks(selectedBooks);
+      }
+    }, [booksData, userDB])
 
     const displayStarsRating = useCallback(() => {
       let starsArrAux: React.ReactElement[] = [];
@@ -74,7 +86,7 @@ export default function Books() {
       }
     }, [booksData, displayStarsRating]);
 
-    console.log('UserAuth', userAuth);
+    console.log("userDB", userDB);
 
     return (
       <div className='w-full h-full min-h-screen'>

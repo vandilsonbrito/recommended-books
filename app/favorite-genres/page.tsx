@@ -11,16 +11,27 @@ import { addUserSelectedGenresToDB } from "@/db/setDB";
 
 const FavoriteGenres: React.FC = () => {
 
-    const { userAuth } = useAuthContext();
+    const { userAuth, userDB } = useAuthContext();
     const { userSelectedGenres, addUserSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
     
     useEffect(() => {
-        if(userAuth && userAuth.uid && userSelectedGenres.length > 0) {
+        if(userAuth && userAuth.uid && userSelectedGenres) {
             console.log("------------userSelectedGenres", userSelectedGenres)
             addUserSelectedGenresToDB(userSelectedGenres, userAuth.uid)
         }
     }, [userAuth, userSelectedGenres])
 
+    // Criar lógica para receber dados de preferencias do DB e setar o estados e inputs pra checked
+    useEffect(() => {
+        const allGenreCheckInputs = document.querySelectorAll('form input[type="checkbox"]');
+        console.log("allGenreCheckInputs", allGenreCheckInputs)
+        if(userDB?.preferences){
+            console.log(userDB.preferences);
+            const checkboxInputsEqualDBPreferences = Array.from(allGenreCheckInputs).filter((input) => (userDB.preferences).some((genre) => input.id === genre));
+            console.log("checkboxInputsEqualDBPreferences", checkboxInputsEqualDBPreferences);
+            checkboxInputsEqualDBPreferences.forEach((input) => input.checked = true);
+        }
+    }, [userDB?.preferences])
 
     return (
         <main>
@@ -145,7 +156,7 @@ const FavoriteGenres: React.FC = () => {
                     </section>
                 </div>
                 <div className="w-full h-24 border-t flex justify-end items-center px-8 shadow-2xl absolute bottom-0">
-                    <Button className="py-5 px-10"> 
+                    <Button className="py-5 px-10" asChild> 
                         <Link href='/books'>Save</Link>
                     </Button>
                 </div>

@@ -7,3 +7,10 @@ export interface BooksDataType {
     linkToBuy: string,
     rating: string
 };
+
+export interface Database {
+    uid: string,
+    username: string
+    email: string,
+    preferences: string[]
+}

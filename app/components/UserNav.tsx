@@ -5,7 +5,7 @@ import Link from "next/link";
  
 export default function UserNav() {
 
-    const { userAuth, logout } = useAuthContext();
+    const { userAuth, userDB, logout } = useAuthContext();
 
     return (
         <DropdownMenu>
@@ -24,6 +24,13 @@ export default function UserNav() {
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[200px]">
+                { userDB && 
+                    <>
+                        <p className="py-1 px-2">{`Olá, ${userDB.username}`}</p>
+                        <DropdownMenuSeparator/>
+                    </>
+                }
+
                 <DropdownMenuItem>
                     <Link href="/my-favorites" className="w-full">My Favorites</Link>
                 </DropdownMenuItem>

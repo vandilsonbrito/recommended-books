@@ -41,9 +41,9 @@ export default function Books() {
         };
     }, []);
 
-    const displayStars = useCallback(() => {
+    const displayStarsRating = useCallback(() => {
       let starsArrAux: React.ReactElement[] = [];
-      let starsArrAux2: React.ReactElement[][] = [];
+      const starsArrAux2: React.ReactElement[][] = [];
     
       booksData.forEach((book) => {
         starsArrAux = [];
@@ -70,9 +70,9 @@ export default function Books() {
     
     useEffect(() => {
       if (booksData.length > 0) {
-        displayStars();
+        displayStarsRating();
       }
-    }, [booksData, displayStars]);
+    }, [booksData, displayStarsRating]);
 
     console.log('UserAuth', userAuth);
 

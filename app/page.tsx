@@ -66,8 +66,16 @@ export default function Home() {
           setWasLoginButtonClicked(true);
         }
 
-        console.log(result);
-        return router.push('/favorite-genres');
+        if(result && result.user) {
+          setWasLoginButtonClicked(false);
+          
+          if(userDB?.preferences) {
+            return router.push('/books');
+          }
+          else {
+            return router.push('/favorite-genres');
+          }
+        }
     }
     
  

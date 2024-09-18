@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SignIn from "@/firebase/auth/signIn";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Logo from '../public/logo.png';
-import { addBooks } from "@/db/setDB";
+import { addBooksToDB } from "@/db/setDB";
 
 import {
   Form,
@@ -21,6 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAuthContext } from "@/context/AuthContext";
  
 const formSchema = z.object({
   email: z.string().email({ message: "Email inválido"}),
@@ -32,11 +33,13 @@ const formSchema = z.object({
 export default function Home() {
 
     /* useEffect(() => {
-      addBooks();
+        addBooksToDB();
     }, []) */
 
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState(0);
+    const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
+    const { userDB } = useAuthContext();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -47,6 +50,7 @@ export default function Home() {
     })
      
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        
         const { result, error } = await SignIn(values.email, values.password);
 
         setErrorMessage(0);
@@ -57,6 +61,9 @@ export default function Home() {
           else if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/too-many-requests') {
             setErrorMessage(2);
           }
+        }
+        else {
+          setWasLoginButtonClicked(true);
         }
 
         console.log(result);
@@ -71,8 +78,13 @@ export default function Home() {
             alt="Logo"
             className='w-24 pb-5'
           />
-          <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white">
+          <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white relative">
               <Form {...form}>
+
+                  <div className={`w-full h-[420px] bg-[#e2e0e06e] text-white ${wasLoginButtonClicked ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
+                      <p className="loader"></p>
+                  </div>
+
                   <h1 className="font-medium text-xl pb-6">Olá. Bem-vindo de volta.</h1>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}

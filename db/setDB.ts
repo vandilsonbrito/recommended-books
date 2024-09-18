@@ -533,8 +533,8 @@ export const addBooksToDB = async () => {
 
 export const addUserSelectedGenresToDB = async(userData: string[], userAuthId: string) => {
     const settingUserPreferencies = (userData: string[], userAuthId: string) => {
-      const userGenrePreferenciesRef = ref(database, `genre-preferencies/${userAuthId}`);
-      return set(userGenrePreferenciesRef, userData);
+      const userGenrePreferencesRef = ref(database, `users/${userAuthId}/preferences`);
+      return set(userGenrePreferencesRef, userData);
     }
     try {
       const AddUserPreferencesPromise = new Promise((resolve, ) => {

@@ -37,7 +37,16 @@ export default function UserNav() {
 
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>
-                    <Link href="/" className="w-full" onClick={() => logout()}>Logout</Link> {/* LOG OUT */}
+                    {
+                        userAuth ?
+                            <>
+                                <Link href="/" className="w-full" onClick={() => logout()}>Logout</Link>
+                            </>
+                                :
+                            <>
+                                <Link href="/" className="w-full">Sign in</Link>
+                            </>
+                    }
                 </DropdownMenuItem>
             </DropdownMenuContent>
 

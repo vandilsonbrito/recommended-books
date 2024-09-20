@@ -12,5 +12,6 @@ export interface Database {
     uid: string,
     username: string
     email: string,
-    preferences: string[]
+    preferences: string[],
+    favorites: BooksDataType[]
 }

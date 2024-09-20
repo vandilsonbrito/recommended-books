@@ -3,8 +3,6 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { AuthContextProvider } from "@/context/AuthProvider";
 
-
-
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

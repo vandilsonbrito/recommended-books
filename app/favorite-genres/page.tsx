@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAuthContext } from "@/context/AuthContext";
-import { addUserSelectedGenresToDB } from "@/db/setDB";
+import { addUserSelectedDataToDB } from "@/db/setDB";
 
 
 
@@ -13,13 +13,15 @@ const FavoriteGenres: React.FC = () => {
 
     const { userAuth, userDB } = useAuthContext();
     const { userSelectedGenres, addUserSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
-    
+
+
     useEffect(() => {
         if(userAuth && userAuth.uid && userSelectedGenres) {
-            console.log("------------userSelectedGenres", userSelectedGenres)
-            addUserSelectedGenresToDB(userSelectedGenres, userAuth.uid)
+            console.log("------------userSelectedGenres", userSelectedGenres);
+            const userSelectedGenresData = { userData: userSelectedGenres }
+            addUserSelectedDataToDB(userSelectedGenresData, userAuth.uid, 'preferences')
         }
-    }, [userAuth, userSelectedGenres])
+    }, [userAuth, userSelectedGenres]);
 
     // Criar lógica para receber dados de preferencias do DB e setar o estados e inputs pra checked
     useEffect(() => {
@@ -27,7 +29,7 @@ const FavoriteGenres: React.FC = () => {
         const allGenreCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');
 
         if (userDB?.preferences) {
-            
+
             const checkboxInputsEqualDBPreferences = Array.from(allGenreCheckInputs).filter((input) => 
                 userDB.preferences.some((genre) => input.id === genre)
             ) as HTMLInputElement[]; 

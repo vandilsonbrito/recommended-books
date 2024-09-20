@@ -22,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useAuthContext } from "@/context/AuthContext";
+import useGlobalStore from "@/utils/store";
  
 const formSchema = z.object({
   email: z.string().email({ message: "Email inválido"}),
@@ -36,10 +37,15 @@ export default function Home() {
         addBooksToDB();
     }, []) */
 
+    const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState(0);
     const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
     const { userDB } = useAuthContext();
+
+    useEffect(() => {
+      userSelectedGenres.map((genre: string) => removeUserSelectedGenres([genre]))
+    }, []);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -69,11 +75,11 @@ export default function Home() {
         if(result && result.user) {
           setWasLoginButtonClicked(false);
           
-          if(userDB?.preferences) {
-            return router.push('/books');
+          if(userDB && userDB.preferences && userDB.preferences.length > 0) {
+              return router.push('/books');
           }
           else {
-            return router.push('/favorite-genres');
+              return router.push('/favorite-genres');
           }
         }
     }

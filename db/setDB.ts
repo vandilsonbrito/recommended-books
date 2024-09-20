@@ -268,7 +268,7 @@ const booksData: BooksDataType[] = [
       {
         id: 29,
         title: "O poder do subconsciente",
-        genre: ["mindset", "marketing"],
+        genre: ["mindset", "self-development"],
         author: "Joseph Murphy",
         imageUrl: "https://m.media-amazon.com/images/I/91kLesOuQwL._SL1500_.jpg",
         linkToBuy: "https://www.amazon.com.br/poder-do-subconsciente-Joseph-Murphy/dp/8546501459/ref=pd_sim_d_sccl_2_35/133-2149500-7288322?pd_rd_w=NQ4Wt&content-id=amzn1.sym.8555f615-361b-42f7-96c4-206bb8a5174e&pf_rd_p=8555f615-361b-42f7-96c4-206bb8a5174e&pf_rd_r=H8DHSCDWRWRZ4K6JJWJW&pd_rd_wg=LqOqL&pd_rd_r=6e3e109f-5fb9-427f-92cc-8629053ed7ff&pd_rd_i=8546501459&psc=1",
@@ -531,16 +531,20 @@ export const addBooksToDB = async () => {
     }
 };
 
-export const addUserSelectedGenresToDB = async(userData: string[], userAuthId: string) => {
-    const settingUserPreferencies = (userData: string[], userAuthId: string) => {
-      const userGenrePreferencesRef = ref(database, `users/${userAuthId}/preferences`);
-      return set(userGenrePreferencesRef, userData);
+type UserData = {
+  userData: string[] | BooksDataType[]
+}
+
+export const addUserSelectedDataToDB = async(data: UserData, userAuthId: string, route: string) => {
+    const settingUserSelectedData = () => {
+      const userSelectedDataRef = ref(database, `users/${userAuthId}/${route}`);
+      return set(userSelectedDataRef, data.userData);
     }
     try {
       const AddUserPreferencesPromise = new Promise((resolve, ) => {
         setTimeout(() => {
           resolve(
-            settingUserPreferencies(userData, userAuthId)
+            settingUserSelectedData()
           )
         }, 100);
       });

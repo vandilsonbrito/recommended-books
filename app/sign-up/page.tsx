@@ -19,7 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useGlobalStore from "@/utils/store";
  
 const formSchema = z.object({
     name: z.string().min(3, {
@@ -33,6 +34,7 @@ const formSchema = z.object({
  
 export default function UserSignUp() {
     
+    const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
     const [errorMessage, setErrorMessage] = useState('');
     const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
     const router = useRouter();
@@ -45,6 +47,9 @@ export default function UserSignUp() {
         },
     })
      
+    useEffect(() => {
+        userSelectedGenres.map((genre) => removeUserSelectedGenres([genre]))
+    }, []);
   
     async function onSubmit(values: z.infer<typeof formSchema>) {
     

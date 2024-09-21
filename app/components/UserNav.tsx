@@ -32,7 +32,7 @@ export default function UserNav() {
                 }
 
                 <DropdownMenuItem>
-                    <Link href="/my-favorites" className="w-full">My Favorites</Link>
+                    <Link href="/my-favorite-books" className="w-full">My Favorites</Link>
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator/>

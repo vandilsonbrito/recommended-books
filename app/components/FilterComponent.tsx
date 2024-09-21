@@ -23,12 +23,9 @@ export default function FilterComponent() {
         if(userDB && userDB.preferences){
             (userDB.preferences).map((genre) => addUserSelectedGenres([genre]));
         }
-        console.log("userSelectedGenres", userSelectedGenres)
     }, [addUserSelectedGenres, userDB]);
-    
-    console.log("userSelectedGenres", userSelectedGenres)
 
-    
+
     return (
         <section className={`w-full h-full pt-5 pb-3 flex ${userSelectedGenres.length === 0 ? 'justify-between' : 'justify-end'} items-center xl:px-[5.5rem] border-b`}>
             { userSelectedGenres.length === 0 && <p className="w-1/2 text-base sm:text-base">Based on your Preferences</p> }
@@ -95,7 +92,7 @@ export default function FilterComponent() {
                         checked={Boolean(userSelectedGenres.some((genre) => genre.includes('communication')))}
                         onCheckedChange={(e) => (e ? addUserSelectedGenres(['communication']) : removeUserSelectedGenres(['communication']) )}
                     >Communication</DropdownMenuCheckboxItem>
-
+    
                 </DropdownMenuContent>
             </DropdownMenu>
         </section>

@@ -18,12 +18,12 @@ const FavoriteGenres: React.FC = () => {
     useEffect(() => {
         if(userAuth && userAuth.uid && userSelectedGenres) {
             console.log("------------userSelectedGenres", userSelectedGenres);
-            const userSelectedGenresData = { userData: userSelectedGenres }
-            addUserSelectedDataToDB(userSelectedGenresData, userAuth.uid, 'preferences')
+            const userSelectedGenresData = { userData: userSelectedGenres };
+            addUserSelectedDataToDB(userSelectedGenresData, userAuth.uid, 'preferences');
         }
     }, [userAuth, userSelectedGenres]);
 
-    // Criar lógica para receber dados de preferencias do DB e setar o estados e inputs pra checked
+    // Receive data from DB and check inputs that are selected 
     useEffect(() => {
         
         const allGenreCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');

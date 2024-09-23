@@ -84,6 +84,41 @@ export default function Books() {
           }
         }
     }, [userAuth, userFavoriteBooks ]);
+
+
+    // Display rating stars
+    const displayStarsRating = useCallback(() => {
+      let starsArrAux: React.ReactElement[] = [];
+      const starsArrAux2: React.ReactElement[][] = [];
+    
+      booksData.forEach((book) => {
+        starsArrAux = [];
+  
+        // Adiciona estrelas cheias
+        for (let i = 0; i < Math.floor(parseFloat(book.rating)); i++) {
+          starsArrAux.push(<MdOutlineStarPurple500 key={i} />);
+        }
+
+        const ratingValue: number = parseFloat(parseFloat(book.rating).toFixed(1));
+        const floorRatingValue: number = Math.floor(parseFloat(book.rating));
+        if (parseFloat((ratingValue - floorRatingValue).toFixed(1)) <= 0.7) {
+          starsArrAux.push(<MdOutlineStarHalf key="half-star" />);
+        }
+        else {
+          starsArrAux.push(<MdOutlineStarPurple500 key="full-star" />);
+        }
+        
+        starsArrAux2.push(starsArrAux)
+      });
+
+      setStarsArr(starsArrAux2);
+    }, [booksData]);
+    useEffect(() => {
+      if (booksData.length > 0) {
+        displayStarsRating();
+      }
+    }, [booksData, displayStarsRating]);
+
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />

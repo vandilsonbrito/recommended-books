@@ -119,6 +119,24 @@ export default function Books() {
       }
     }, [booksData, displayStarsRating]);
 
+    // Receive data from DB and check inputs that are selected 
+    useEffect(() => {   
+        const allFavoriteCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');
+        console.log("allFavoriteCheckInputs", allFavoriteCheckInputs)
+
+        if (userDB?.favorites) {
+
+            const checkboxInputsEqualDBFavorites = Array.from(allFavoriteCheckInputs).filter((input) => 
+                userDB.favorites.some((book) => parseInt(input.id) === book.id)
+            ) as HTMLInputElement[]; 
+            console.log("checkboxInputsEqualDBFavorites", checkboxInputsEqualDBFavorites)
+            checkboxInputsEqualDBFavorites.forEach((input) => {
+                input.checked = true; 
+            });
+        }
+    }, [userFavoriteBooks, userDB?.favorites]);
+
+
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />

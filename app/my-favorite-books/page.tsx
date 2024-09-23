@@ -50,6 +50,16 @@ export default function Books() {
             off(booksRef); 
         };
     }, []);
+    
+
+    // When logged in and there is/are favorite(s) data from DB SET userFavoriteBooks local state
+    useEffect(() => {
+      if(userAuth?.uid && userDB?.favorites && userFavoriteBooks.length === 0) {
+          
+            addUserFavoriteBooks(userDB.favorites);
+            console.log("Está logado e Tem favoritos SOMENTE no DB");  
+      }
+    }, [userAuth?.uid, userDB]);
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />

@@ -58,14 +58,17 @@ export default function Home() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         
         const { result, error } = await SignIn(values.email, values.password);
+        const { error } = await SignIn(values.email, values.password);
 
         setErrorMessage(0);
         if(error) {
           if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/invalid-credential') {
             setErrorMessage(1);
+            setWasLoginButtonClicked(false);
           }
           else if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/too-many-requests') {
             setErrorMessage(2);
+            setWasLoginButtonClicked(false);
           }
         }
         else {
@@ -111,7 +114,7 @@ export default function Home() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="email" {...field} className="py-5" />
+                            <Input type="email" placeholder="email" {...field} className="py-5" disabled={wasLoginButtonClicked} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -124,7 +127,7 @@ export default function Home() {
                         <FormItem>
                           <FormLabel>Senha</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="passowrd" {...field} className="py-5"/>
+                            <Input type="password" placeholder="passowrd" {...field} className="py-5" disabled={wasLoginButtonClicked}/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -137,7 +140,7 @@ export default function Home() {
                       >Login</Button>
                   </form>
                   <h2 className="text-sm pt-4 text-center">Não tem uma conta?
-                    <Link href='/sign-up' className='font-semibold ml-1'>Crie uma</Link>
+                    <Link href='/sign-up' className='font-semibold ml-1 underline'>Crie uma</Link>
                   </h2>
               </Form>
           </div>

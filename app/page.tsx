@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Logo from '../public/logo.png';
-import { addBooksToDB } from "@/db/setDB";
+/* import { addBooksToDB } from "@/db/setDB"; */
 
 import {
   Form,
@@ -41,10 +41,11 @@ export default function Home() {
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState(0);
     const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
-    const { userDB } = useAuthContext();
+    const [loadUser, setLoadUser] = useState(false);
+    const { userAuth, userDB } = useAuthContext();
 
     useEffect(() => {
-      userSelectedGenres.map((genre: string) => removeUserSelectedGenres([genre]))
+      userSelectedGenres.map((genre: string) => removeUserSelectedGenres([genre]));
     }, []);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -53,13 +54,30 @@ export default function Home() {
             email: "",
             password: ""
         },
-    })
+    });
+
+    useEffect(() => {
+        if(userAuth) {
+            if(userDB) {
+                console.log("userDB", userDB)
+                if(userDB?.preferences?.length > 0) {
+                    setLoadUser(false);
+                    return router.push('/books');
+                }
+                else {
+                    setLoadUser(false);
+                    return router.push('/favorite-genres');
+                }   
+            }
+        }
+        console.log("userAuth", userAuth)
+    }, [userAuth, userDB, router]);
      
     async function onSubmit(values: z.infer<typeof formSchema>) {
         
-        const { result, error } = await SignIn(values.email, values.password);
         const { error } = await SignIn(values.email, values.password);
 
+        setWasLoginButtonClicked(true);
         setErrorMessage(0);
         if(error) {
           if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/invalid-credential') {
@@ -72,18 +90,7 @@ export default function Home() {
           }
         }
         else {
-          setWasLoginButtonClicked(true);
-        }
-
-        if(result && result.user) {
-          setWasLoginButtonClicked(false);
-          
-          if(userDB && userDB.preferences && userDB.preferences.length > 0) {
-              return router.push('/books');
-          }
-          else {
-              return router.push('/favorite-genres');
-          }
+          setLoadUser(true);
         }
     }
     
@@ -98,7 +105,7 @@ export default function Home() {
           <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white relative">
               <Form {...form}>
 
-                  <div className={`w-full h-[420px] bg-[#e2e0e06e] text-white ${wasLoginButtonClicked ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
+                  <div className={`w-full h-[420px] bg-[#e2e0e06e] text-white ${loadUser ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
                       <p className="loader"></p>
                   </div>
 

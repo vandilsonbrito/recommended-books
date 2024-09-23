@@ -15,6 +15,7 @@
 
 # production
 /build
+/db/Data.ts
 
 # misc
 .DS_Store

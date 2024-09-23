@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import useGlobalStore from "@/utils/store";
+
  
 const formSchema = z.object({
     name: z.string().min(3, {
@@ -36,7 +37,8 @@ export default function UserSignUp() {
     
     const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
     const [errorMessage, setErrorMessage] = useState('');
-    const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
+    const [loadUser, setLoadUser] = useState(false);
+
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,28 +47,29 @@ export default function UserSignUp() {
             email: "",
             password: ""
         },
-    })
+    });
      
     useEffect(() => {
         userSelectedGenres.map((genre) => removeUserSelectedGenres([genre]))
     }, []);
+
   
     async function onSubmit(values: z.infer<typeof formSchema>) {
     
         const { result, error } = await SignUp(values.name, values.email, values.password);
 
+        setLoadUser(true);
+        setErrorMessage('');
         if(error) {
             if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/email-already-in-use'){
                 setErrorMessage('Esse email já está cadastrado');
+                setLoadUser(false);
             }
             return console.log(error);
         }
-        else {
-            setWasLoginButtonClicked(true);
-        }
 
         if(result && result.user) {
-            setWasLoginButtonClicked(false);
+            setLoadUser(false);
             return router.push('/favorite-genres');
         }
 
@@ -83,7 +86,7 @@ export default function UserSignUp() {
             <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white relative">
                 <Form {...form}>
 
-                    <div className={`w-full h-[480px] bg-[#e2e0e06e] text-white ${wasLoginButtonClicked ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
+                    <div className={`w-full h-[480px] bg-[#e2e0e06e] text-white ${loadUser ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
                         <p className="loader"></p>
                     </div>
 
@@ -99,7 +102,7 @@ export default function UserSignUp() {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                <Input type="text" placeholder="name" {...field} className="py-5" />
+                                <Input type="text" placeholder="name" {...field} className="py-5" disabled={loadUser}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -112,7 +115,7 @@ export default function UserSignUp() {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                <Input type="email" placeholder="email" {...field} className="py-5" />
+                                <Input type="email" placeholder="email" {...field} className="py-5" disabled={loadUser}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -125,7 +128,7 @@ export default function UserSignUp() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                <Input type="password" placeholder="passowrd" {...field} className="py-5"/>
+                                <Input type="password" placeholder="passowrd" {...field} className="py-5" disabled={loadUser}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -139,7 +142,7 @@ export default function UserSignUp() {
                             >Criar conta</Button>
                     </form>
                     <h2 className="text-sm pt-4 text-center">Já possui cadastro?
-                    <Link href='/' className='font-semibold ml-1'>Faça Login</Link>
+                    <Link href='/' className='font-semibold ml-1 underline'>Faça Login</Link>
                     </h2>
                 </Form>
             </div>

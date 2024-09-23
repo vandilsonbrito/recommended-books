@@ -30,8 +30,11 @@ const useGlobalStore = create <State & Action>((set) => ({
           userFavoriteBooks: [...state.userFavoriteBooks, ...userFavoriteBooks],
     })),
     removeUserFavoriteBooks: (userFavoriteBooks) => 
-        set((state) => ({                              // será vddeira qdo o gênero não estiver presente 
-        userFavoriteBooks: state.userFavoriteBooks.filter(genre => !userFavoriteBooks.includes(genre)) 
+        set((state) => ({                              //book.id é o elemento a ser removido
+        userFavoriteBooks: state.userFavoriteBooks.filter(favorite => 
+            !userFavoriteBooks.some(book => book.id === favorite.id)
+        ) 
     }))
+    
 }));
 export default useGlobalStore

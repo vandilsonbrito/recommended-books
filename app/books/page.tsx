@@ -53,21 +53,18 @@ export default function Books() {
 
     // Get selected genres from DB
     useEffect(() => {
-      if(userDB && userDB.preferences && (userDB.preferences).length > 0) {
-        let selectedBooks;
+        let selectedBooks: BooksDataType[] = [];
         if(userSelectedGenres.length > 0) {
           selectedBooks = booksData.filter(book => userSelectedGenres.some(genre => book.genre.includes(genre)));  
         }
-        else if(userDB.preferences.length > 0) {
+        else if(userDB && userDB.preferences && (userDB.preferences).length > 0) {
           selectedBooks = booksData.filter(book => (userDB.preferences).some(genre => book.genre.includes(genre)));  
         }
-        else {
-          selectedBooks = booksData;
-        }
-        setFilteredBooks(selectedBooks);
-      }
+
+        selectedBooks.length > 0 ? setFilteredBooks(selectedBooks) : setFilteredBooks(booksData);
     }, [booksData, userDB, userSelectedGenres]);
 
+    // Display rating stars
     const displayStarsRating = useCallback(() => {
       let starsArrAux: React.ReactElement[] = [];
       const starsArrAux2: React.ReactElement[][] = [];
@@ -94,14 +91,63 @@ export default function Books() {
 
       setStarsArr(starsArrAux2);
     }, [booksData]);
-    
     useEffect(() => {
       if (booksData.length > 0) {
         displayStarsRating();
       }
     }, [booksData, displayStarsRating]);
 
-    console.log("userDB", userDB);
+
+    // When logged in and there is/are favorite(s) data from DB, SET userFavoriteBooks local state
+    useEffect(() => {
+      if(userAuth?.uid && userDB?.favorites && userFavoriteBooks.length === 0) {
+          
+            addUserFavoriteBooks(userDB.favorites);
+            console.log("Está logado e Tem favoritos SOMENTE no DB");  
+      }
+    }, [userAuth?.uid, userDB]);
+
+    // When logged in and if there is/are favorite(s) local data, SET to DB. When local data is now empty (had data) and there is data in DB, so clean DB
+    useEffect(() => {
+      console.log("userFavoriteBooks", userFavoriteBooks)
+        if(userAuth?.uid){
+            if(userFavoriteBooks.length > 0) {
+                console.log("Colocando userFavoriteBooks no DB", userFavoriteBooks);
+                
+                const userSelectedFavoritesData = { userData: userFavoriteBooks };
+                addUserSelectedDataToDB(userSelectedFavoritesData, userAuth.uid, 'favorites');
+            }
+            else {
+              if (userDB?.favorites && userDB.favorites.length > 0) {
+                // Apenas limpar o DB se não houver userFavoriteBooks e se já não estiver carregando do DB
+                const emptyFavoritesData = { userData: [] }; 
+                addUserSelectedDataToDB(emptyFavoritesData, userAuth.uid, 'favorites');
+              }
+            } 
+        }
+        
+    }, [userAuth?.uid, userFavoriteBooks]);
+
+    // Receive data from DB and check inputs that are selected 
+    useEffect(() => {
+        
+      const allFavoriteCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');
+      console.log("allFavoriteCheckInputs", allFavoriteCheckInputs)
+
+      if (userDB?.favorites) {
+
+          const checkboxInputsEqualDBFavorites = Array.from(allFavoriteCheckInputs).filter((input) => 
+              userDB.favorites.some((book) => parseInt(input.id) === book.id)
+          ) as HTMLInputElement[]; 
+
+          checkboxInputsEqualDBFavorites.forEach((input) => {
+              input.checked = true; 
+          });
+      }
+
+    }, [filteredBooks.length > 0, userDB?.favorites]);
+
+
 
     return (
       <div className='w-full h-full min-h-screen'>
@@ -120,12 +166,16 @@ export default function Books() {
                                   {filteredBooks.map((book) => (
                                       <li className="w-[249px] h-full relative" key={book.id}>
 
-                                          <div className="absolute top-2 right-2 text-2xl text-blue-900 cursor-pointer">  
+                                          <form className="absolute top-2 right-2 text-2xl text-blue-900 cursor-pointer">  
                                                 <label className="cursor-pointer" key={book.id}>
                                                   <input 
                                                       type="checkbox" 
                                                       className="hidden" 
-                                                      onChange={(e) => e.target.checked ? addUserFavoriteBooks([book]) : removeUserFavoriteBooks([book])} 
+                                                      id={`${book.id}`}
+                                                      onChange={ (e) => e.target.checked 
+                                                        ? addUserFavoriteBooks([book])
+                                                        : removeUserFavoriteBooks([book]) 
+                                                      }
                                                   />
                                                   {
                                                       userFavoriteBooks.some(favorite => favorite.id === book.id) ? (
@@ -134,8 +184,9 @@ export default function Books() {
                                                           <IoIosStarOutline size={30} />
                                                       )
                                                   }
+                                                  <p>{ Boolean(userFavoriteBooks.some(favorite => favorite.id === book.id)) }</p>
                                               </label>
-                                          </div>
+                                          </form>
 
                                           <div className="w-[249px] h-[249px] flex justify-center items-center py-2 bg-slate-100 rounded-t-md">
                                               <Image
@@ -143,7 +194,8 @@ export default function Books() {
                                                   alt={book.title}
                                                   width={140}
                                                   height={160}
-                                                  className=''
+                                                  className='select-none'
+                                                  
                                               />
                                           </div>
                                           <div className="w-[249px] h-[150px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
@@ -172,7 +224,7 @@ export default function Books() {
                           ) 
                           : 
                           (
-                              <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center mx-auto px-8 md:px-12 lg:px-16">
+                              <div className="w-full h-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center mx-auto px-8 md:px-12 lg:px-16">
                                   <CardSkeleton/>
                                   <CardSkeleton/>
                                   <CardSkeleton/>

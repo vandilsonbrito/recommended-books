@@ -23,6 +23,8 @@ import Footer from '../components/Footer';
 import CardSkeleton from '../components/CardSkeleton';
 import { Button } from '@/components/ui/button';
 import { addUserSelectedDataToDB } from '@/db/setDB';
+
+
 export default function Books() {
 
     const { userAuth, DBLoading, userDB } = useAuthContext();
@@ -31,6 +33,23 @@ export default function Books() {
     const [booksData, setBooksData] = useState<BooksDataType[]>([]);
     const [starsArr, setStarsArr] = useState<React.ReactElement[][]>([]);
     const [isThereAnyFavoriteBook, setIsThereAnyFavoriteBook] = useState<boolean>(true);
+
+    // Get books data from DB
+    useEffect(() => { 
+        const booksRef = ref(database, 'books'); 
+        const fetchData = () => {
+            onValue(booksRef, (snapshot) => {
+                const fetchedData = snapshot.val();
+                setBooksData(fetchedData);
+            });
+        };
+        fetchData(); 
+
+        // Clean listener when component unmount
+        return () => {
+            off(booksRef); 
+        };
+    }, []);
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />

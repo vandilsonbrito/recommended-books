@@ -60,6 +60,30 @@ export default function Books() {
             console.log("Está logado e Tem favoritos SOMENTE no DB");  
       }
     }, [userAuth?.uid, userDB]);
+
+      
+    // When logged in and if there is/are favorite(s) local data, SET to DB. When local data is now empty (had data) and there is data in DB, so clean DB
+    useEffect(() => {
+        if(userAuth?.uid) {
+          if(userFavoriteBooks.length > 0) {
+              setIsThereAnyFavoriteBook(true);
+              console.log("------------favoriteBooks", userFavoriteBooks);
+              const userSelectedFavoritesData = { userData: userFavoriteBooks }
+              addUserSelectedDataToDB(userSelectedFavoritesData, userAuth?.uid, 'favorites')
+          }
+          else {
+              if (userDB?.favorites && userDB.favorites.length > 0) {
+                setIsThereAnyFavoriteBook(true);
+                // Apenas limpar o DB se não houver userFavoriteBooks e se já não estiver carregando do DB
+                const emptyFavoritesData = { userData: [] }; 
+                addUserSelectedDataToDB(emptyFavoritesData, userAuth.uid, 'favorites');
+              }
+              else {
+                setIsThereAnyFavoriteBook(false);
+              }
+          }
+        }
+    }, [userAuth, userFavoriteBooks ]);
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />

@@ -8,6 +8,7 @@ interface AuthContextType {
     userAuth: User | null;
     userDB: Database | null;
     logout: () => void;
+    DBLoading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);

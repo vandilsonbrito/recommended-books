@@ -32,7 +32,6 @@ export default function Books() {
 
     const [booksData, setBooksData] = useState<BooksDataType[]>([]);
     const [starsArr, setStarsArr] = useState<React.ReactElement[][]>([]);
-    const [isThereAnyFavoriteBook, setIsThereAnyFavoriteBook] = useState<boolean>(true);
 
     // Get books data from DB
     useEffect(() => { 
@@ -66,20 +65,15 @@ export default function Books() {
     useEffect(() => {
         if(userAuth?.uid) {
           if(userFavoriteBooks.length > 0) {
-              setIsThereAnyFavoriteBook(true);
               console.log("------------favoriteBooks", userFavoriteBooks);
               const userSelectedFavoritesData = { userData: userFavoriteBooks }
               addUserSelectedDataToDB(userSelectedFavoritesData, userAuth?.uid, 'favorites')
           }
           else {
               if (userDB?.favorites && userDB.favorites.length > 0) {
-                setIsThereAnyFavoriteBook(true);
                 // Apenas limpar o DB se não houver userFavoriteBooks e se já não estiver carregando do DB
                 const emptyFavoritesData = { userData: [] }; 
                 addUserSelectedDataToDB(emptyFavoritesData, userAuth.uid, 'favorites');
-              }
-              else {
-                setIsThereAnyFavoriteBook(false);
               }
           }
         }
@@ -121,6 +115,7 @@ export default function Books() {
 
     // Receive data from DB and check inputs that are selected 
     useEffect(() => {   
+        console.log("userFavoriteBooks", userFavoriteBooks)
         const allFavoriteCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');
         console.log("allFavoriteCheckInputs", allFavoriteCheckInputs)
 
@@ -145,81 +140,10 @@ export default function Books() {
           userAuth ? (
               <main className="w-full h-full flex flex-col justify-center items-center text-xl py-8 bg-white px-8 md:px-12 lg:px-14">
 
-                  <div className="w-full h-full min-h-[calc(100vh-300px)] flex flex-col justify-center items-center pt-6">
-                      {
-                          userFavoriteBooks.length > 0 ? 
-                          (
-                              <ul className="will-change-contents h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 items-center mx-auto">
-                                  {userFavoriteBooks.map((book) => (
-                                      <li className="w-[249px] h-full relative" key={book.id}>
-
-                                          <form className="absolute top-2 right-2 text-2xl text-blue-900 cursor-pointer">  
-                                                <label className="cursor-pointer" key={book.id}>
-                                                  <input 
-                                                      type="checkbox" 
-                                                      className="" 
-                                                      id={`${book.id}`}
-                                                      onChange={(e) => !(e.target.checked) && removeUserFavoriteBooks([book])} 
-                                                  />
-                                                  {
-                                                      userFavoriteBooks.some(favorite => favorite.id === book.id) ? (
-                                                          <IoIosStar size={30} />
-                                                      ) : (
-                                                          <IoIosStarOutline size={30} />
-                                                      )
-                                                  }
-                                              </label>
-                                            </form>
-
-                                            <div className="w-[249px] h-[249px] flex justify-center items-center py-2 bg-slate-100 rounded-t-md">
-                                              <Image
-                                                  src={book.imageUrl}
-                                                  alt={book.title}
-                                                  width={140}
-                                                  height={160}
-                                                  className=''
-                                              />
-                                            </div>
-
-                                            <div className="w-[249px] h-[190px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
-                                                <div className="text-sm my-1 font-medium">
-                                                    <h2 className='text-base font-semibold line-clamp-2'>{book.title}</h2>
-                                                    <p className='py-1'>Author: {book.author}</p>
-
-                                                    <HoverCard>
-                                                        <HoverCardTrigger>
-                                                            <div className="flex items-center text-lg text-yellow-400 cursor-pointer">
-                                                                {starsArr[book.id] && starsArr[book.id].map((star, index) => (
-                                                                    <span key={index}>{star}</span>
-                                                                ))}
-                                                            </div>
-                                                        </HoverCardTrigger>
-                                                        <HoverCardContent>
-                                                            <p>Rating: <strong>{book.rating}</strong> out of <strong>5</strong></p>
-                                                        </HoverCardContent>
-                                                    </HoverCard>
-                                                </div>
-                                              
-                                                <Button asChild className='w-full self-end'>
-                                                  <Link
-                                                      className=''
-                                                      href={book.linkToBuy}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                  >
-                                                      Buy Here
-                                                  </Link>
-                                              </Button> 	
-
-                                          </div>
-                                      </li>
-                                  ))}
-                              </ul>
-                          ) 
-                          : 
-                          (   
-                              DBLoading ?
-                              (
+                  <div className="w-full h-full min-h-[calc(100vh-285px)] flex flex-col justify-center items-center pt-6">
+                      {     
+                            DBLoading ?
+                            (
                                 <div className={` ${DBLoading ? 'w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center gap-4 mx-auto px-8 md:px-12 lg:px-16' : 'hidden' }`}>
                                     <CardSkeleton/>
                                     <CardSkeleton/>
@@ -230,15 +154,85 @@ export default function Books() {
                                     <CardSkeleton/>
                                     <CardSkeleton/>
                                 </div>
-                              )
-                              :
-                              (
-                                !isThereAnyFavoriteBook &&
-                                  <div className="w-full h-full flex flex-col justify-center items-center">
-                                      <p>There is no favorite book yet.</p>
-                                  </div>
-                              )
-                          )
+                            )                         
+                            : 
+                            (   
+                                userFavoriteBooks.length > 0 ? 
+                                (
+                                    <ul className="will-change-contents h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 items-center mx-auto">
+                                        {userFavoriteBooks.map((book) => (
+                                            <li className="w-[249px] h-full relative" key={book.id}>
+    
+                                                <form className="absolute top-2 right-2 text-2xl text-blue-900 cursor-pointer">  
+                                                    <label className="cursor-pointer" key={book.id}>
+                                                        <input 
+                                                            type="checkbox" 
+                                                            className="hidden" 
+                                                            id={`${book.id}`}
+                                                            onChange={(e) => !(e.target.checked) && removeUserFavoriteBooks([book])} 
+                                                        />
+                                                        {
+                                                            userFavoriteBooks.some(favorite => favorite.id === book.id) ? (
+                                                                <IoIosStar size={30} />
+                                                            ) : (
+                                                                <IoIosStarOutline size={30} />
+                                                            )
+                                                        }
+                                                    </label>
+                                                </form>
+    
+                                                <div className="w-[249px] h-[249px] flex justify-center items-center py-2 bg-slate-100 rounded-t-md">
+                                                    <Image
+                                                        src={book.imageUrl}
+                                                        alt={book.title}
+                                                        width={140}
+                                                        height={160}
+                                                        className=''
+                                                    />
+                                                </div>
+    
+                                                <div className="w-[249px] h-[190px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
+                                                    <div className="text-sm my-1 font-medium">
+                                                        <h2 className='text-base font-semibold line-clamp-2'>{book.title}</h2>
+                                                        <p className='py-1'>Author: {book.author}</p>
+    
+                                                        <HoverCard>
+                                                            <HoverCardTrigger>
+                                                                <div className="flex items-center text-lg text-yellow-400 cursor-pointer">
+                                                                    {starsArr[book.id] && starsArr[book.id].map((star, index) => (
+                                                                        <span key={index}>{star}</span>
+                                                                    ))}
+                                                                </div>
+                                                            </HoverCardTrigger>
+                                                            <HoverCardContent>
+                                                                <p>Rating: <strong>{book.rating}</strong> out of <strong>5</strong></p>
+                                                            </HoverCardContent>
+                                                        </HoverCard>
+                                                    </div>
+                                                    
+                                                    <Button asChild className='w-full self-end'>
+                                                        <Link
+                                                            className=''
+                                                            href={book.linkToBuy}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            Buy Here
+                                                        </Link>
+                                                    </Button> 	
+    
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) 
+                                :
+                                (
+                                    <div className="w-full h-full flex flex-col justify-center items-center text-base">
+                                        <p>There is no favorite book yet.</p>
+                                    </div>
+                                )
+                            )
                       }
                   </div>
                   <ScrollToTop />
@@ -250,7 +244,7 @@ export default function Books() {
                 <p>You need to <Link href="/" className='underline'>sign in</Link>.</p>
             </div>
           )
-}
+        }
 
         <Footer/>
     </div>

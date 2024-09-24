@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { AuthContextProvider } from "@/context/AuthProvider";
+import SignedUpToast from "./components/SignedUpToast";
+
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,12 +17,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  
+
   return (
     <html lang="en">
       <body
         className={montserrat.className}
       >
         <AuthContextProvider>
+            <SignedUpToast/>
             {children}
         </AuthContextProvider>
       </body>

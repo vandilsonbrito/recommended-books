@@ -12,9 +12,14 @@ import { addUserSelectedDataToDB } from "@/db/setDB";
 const FavoriteGenres: React.FC = () => {
 
     const { userAuth, userDB } = useAuthContext();
-    const { userSelectedGenres, addUserSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
+    const { userSelectedGenres, addUserSelectedGenres, removeUserSelectedGenres, setUserSignedUp } = useGlobalStore();
 
+    //Disabled userSignedUp state that controls toast
+    useEffect(() => {
+        setUserSignedUp(false);
+    },[])
 
+    //Sync 'userSelectedGenres' local state with DB
     useEffect(() => {
         if(userAuth && userAuth.uid && userSelectedGenres) {
             console.log("------------userSelectedGenres", userSelectedGenres);

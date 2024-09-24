@@ -3,7 +3,8 @@ import { BooksDataType } from './interfaces';
 
 export type State = {
     userSelectedGenres: string[],
-    userFavoriteBooks: BooksDataType[]
+    userFavoriteBooks: BooksDataType[],
+    userSignedUp: boolean
 };
 
 export type Action = {
@@ -11,7 +12,7 @@ export type Action = {
     removeUserSelectedGenres: (userSelectedGenres: State['userSelectedGenres']) => void,
     addUserFavoriteBooks: (userFavoriteBooks: State['userFavoriteBooks']) => void,
     removeUserFavoriteBooks: (userFavoriteBooks: State['userFavoriteBooks']) => void,
-
+    setUserSignedUp: (userSignedUp: State['userSignedUp']) => void
 };
 
 const useGlobalStore = create <State & Action>((set) => ({
@@ -34,7 +35,9 @@ const useGlobalStore = create <State & Action>((set) => ({
         userFavoriteBooks: state.userFavoriteBooks.filter(favorite => 
             !userFavoriteBooks.some(book => book.id === favorite.id)
         ) 
-    }))
+    })),
+    userSignedUp: false,
+    setUserSignedUp: (value: boolean) => set({ userSignedUp: value }),
     
 }));
 export default useGlobalStore

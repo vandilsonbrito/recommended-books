@@ -40,7 +40,7 @@ export default function UserNav() {
                     {
                         userAuth ?
                             <>
-                                <Link href="/" className="w-full" onClick={() => logout()}>Logout</Link>
+                                <Link href="/" className="w-full" onClick={() => logout()}>Log out</Link>
                             </>
                                 :
                             <>

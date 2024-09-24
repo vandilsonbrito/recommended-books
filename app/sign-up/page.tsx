@@ -25,17 +25,17 @@ import useGlobalStore from "@/utils/store";
  
 const formSchema = z.object({
     name: z.string().min(3, {
-        message: "Mínimo de 3 caracteres",
+        message: "Min 3 characters",
       }).max(30),
     email: z.string().email({ message: "Email inválido"}),
     password: z.string().min(6, {
-        message: "Mínimo de 6 caracteres",
+        message: "Min 6 characters",
       }).max(30),
 })
  
 export default function UserSignUp() {
     
-    const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
+    const { userSelectedGenres, removeUserSelectedGenres, setUserSignedUp } = useGlobalStore();
     const [errorMessage, setErrorMessage] = useState('');
     const [loadUser, setLoadUser] = useState(false);
 
@@ -56,13 +56,13 @@ export default function UserSignUp() {
   
     async function onSubmit(values: z.infer<typeof formSchema>) {
     
-        const { result, error } = await SignUp(values.name, values.email, values.password);
-
         setLoadUser(true);
         setErrorMessage('');
+        const { result, error } = await SignUp(values.name, values.email, values.password);
+
         if(error) {
             if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/email-already-in-use'){
-                setErrorMessage('Esse email já está cadastrado');
+                setErrorMessage('Email already registered.');
                 setLoadUser(false);
             }
             return console.log(error);
@@ -70,6 +70,7 @@ export default function UserSignUp() {
 
         if(result && result.user) {
             setLoadUser(false);
+            setUserSignedUp(true);
             return router.push('/favorite-genres');
         }
 
@@ -90,7 +91,7 @@ export default function UserSignUp() {
                         <p className="loader"></p>
                     </div>
 
-                    <h1 className="font-medium text-xl pb-6">Olá. Cadastre-se.</h1>
+                    <h1 className="font-medium text-xl pb-6 text-center">Sign up</h1>
                     <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-4"
@@ -139,10 +140,10 @@ export default function UserSignUp() {
                         <Button
                             className="w-full py-5"
                             type="submit"
-                            >Criar conta</Button>
+                            >Sign up</Button>
                     </form>
-                    <h2 className="text-sm pt-4 text-center">Já possui cadastro?
-                    <Link href='/' className='font-semibold ml-1 underline'>Faça Login</Link>
+                    <h2 className="text-sm pt-4 text-center">Already registered?
+                    <Link href='/' className='font-semibold ml-1 underline'>Log in</Link>
                     </h2>
                 </Form>
             </div>

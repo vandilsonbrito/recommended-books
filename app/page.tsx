@@ -25,9 +25,9 @@ import { useAuthContext } from "@/context/AuthContext";
 import useGlobalStore from "@/utils/store";
  
 const formSchema = z.object({
-  email: z.string().email({ message: "Email inválido"}),
+  email: z.string().email({ message: "Invalid email"}),
   password: z.string().min(6, {
-    message: "Mínimo de 6 caracteres",
+    message: "Min 6 characters",
   }).max(30),
 })
  
@@ -109,7 +109,7 @@ export default function Home() {
                       <p className="loader"></p>
                   </div>
 
-                  <h1 className="font-medium text-xl pb-6">Olá. Bem-vindo de volta.</h1>
+                  <h1 className="font-medium text-xl pb-6">Hello. Welcome back!</h1>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-8"
@@ -132,7 +132,7 @@ export default function Home() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Senha</FormLabel>
+                          <FormLabel>Password</FormLabel>
                           <FormControl>
                             <Input type="password" placeholder="passowrd" {...field} className="py-5" disabled={wasLoginButtonClicked}/>
                           </FormControl>
@@ -140,14 +140,14 @@ export default function Home() {
                         </FormItem>
                       )}
                     />
-                    { errorMessage === 1 && <p className="text-red-600">Email e/ou senha inválido.</p> || errorMessage === 2 && <p className="text-red-600">Bloqueio por muitas tentativas inválidas. Tente novamente mais tarde</p> }
+                    { errorMessage === 1 && <p className="text-red-600">Invalid email and/or password.</p> || errorMessage === 2 && <p className="text-red-600">Blocked due to many invalid requests. Try again later.</p> }
                     <Button
                       className="w-full py-5"
                       type="submit"
-                      >Login</Button>
+                      >Log in</Button>
                   </form>
-                  <h2 className="text-sm pt-4 text-center">Não tem uma conta?
-                    <Link href='/sign-up' className='font-semibold ml-1 underline'>Crie uma</Link>
+                  <h2 className="text-sm pt-4 text-center">Don&apos;t have an account?
+                    <Link href='/sign-up' className='font-semibold ml-1 underline'>Sign up</Link>
                   </h2>
               </Form>
           </div>

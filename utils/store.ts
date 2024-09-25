@@ -4,7 +4,8 @@ import { BooksDataType } from './interfaces';
 export type State = {
     userSelectedGenres: string[],
     userFavoriteBooks: BooksDataType[],
-    userSignedUp: boolean
+    userSignedUp: boolean,
+    isBookSavedOnDB: boolean
 };
 
 export type Action = {
@@ -12,7 +13,8 @@ export type Action = {
     removeUserSelectedGenres: (userSelectedGenres: State['userSelectedGenres']) => void,
     addUserFavoriteBooks: (userFavoriteBooks: State['userFavoriteBooks']) => void,
     removeUserFavoriteBooks: (userFavoriteBooks: State['userFavoriteBooks']) => void,
-    setUserSignedUp: (userSignedUp: State['userSignedUp']) => void
+    setUserSignedUp: (userSignedUp: State['userSignedUp']) => void,
+    setIsBookSavedOnDB: (isBookSavedOnDB: State['isBookSavedOnDB']) => void
 };
 
 const useGlobalStore = create <State & Action>((set) => ({
@@ -38,6 +40,8 @@ const useGlobalStore = create <State & Action>((set) => ({
     })),
     userSignedUp: false,
     setUserSignedUp: (value: boolean) => set({ userSignedUp: value }),
+    isBookSavedOnDB: false,
+    setIsBookSavedOnDB: (value: boolean) => ({ isBookSavedOnDB: value })
     
 }));
 export default useGlobalStore

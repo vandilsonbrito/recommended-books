@@ -91,11 +91,15 @@ export default function Home() {
     }
     
     const handleLogInGoogle = async () => {
+      setLoadUser(true);
+
       const { result, error } = await SignInWithGoogle();
       if (result) {
+        setLoadUser(false);
         return router.push('/books');
       } else {
         console.error('Error signing in with Google:', error);
+        setLoadUser(false);
         return router.push('/');
       }
     }
@@ -110,7 +114,7 @@ export default function Home() {
           <div className="w-[22rem] shadow-lg rounded-xl px-7 py-10 bg-white relative">
               <Form {...form}>
 
-                  <div className={`w-full h-[420px] bg-[#e2e0e06e] text-white ${loadUser ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
+                  <div className={`w-full h-[448px] rounded-xl bg-[#e2e0e06e] text-white ${loadUser ? 'flex' : 'hidden'} flex-col justify-center items-center absolute top-0 left-0 z-10 roundex-xl`}>
                       <p className="loader"></p>
                   </div>
 

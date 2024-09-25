@@ -10,8 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Logo from '../public/logo.png';
-/* import { addBooksToDB } from "@/db/setDB"; */
-
+import { FcGoogle } from "react-icons/fc";
 import {
   Form,
   FormControl,
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { useAuthContext } from "@/context/AuthContext";
 import useGlobalStore from "@/utils/store";
+import SignInWithGoogle from "@/firebase/auth/signInWithGoogle";
  
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email"}),
@@ -32,10 +32,6 @@ const formSchema = z.object({
 })
  
 export default function Home() {
-
-    /* useEffect(() => {
-        addBooksToDB();
-    }, []) */
 
     const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
     const router = useRouter();
@@ -94,6 +90,15 @@ export default function Home() {
         }
     }
     
+    const handleLogInGoogle = async () => {
+      const { result, error } = await SignInWithGoogle();
+      if (result) {
+        return router.push('/books');
+      } else {
+        console.error('Error signing in with Google:', error);
+        return router.push('/');
+      }
+    }
  
     return (
       <main className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-black">
@@ -112,7 +117,7 @@ export default function Home() {
                   <h1 className="font-medium text-xl pb-6">Hello. Welcome back!</h1>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
+                    className="space-y-5"
                     >
                     <FormField
                       control={form.control}
@@ -146,6 +151,10 @@ export default function Home() {
                       type="submit"
                       >Log in</Button>
                   </form>
+                  <Button className="w-full flex gap-2 mt-4" variant="secondary" onClick={handleLogInGoogle}>
+                      Google
+                      <FcGoogle className="text-lg"/>
+                  </Button>
                   <h2 className="text-sm pt-4 text-center">Don&apos;t have an account?
                     <Link href='/sign-up' className='font-semibold ml-1 underline'>Sign up</Link>
                   </h2>

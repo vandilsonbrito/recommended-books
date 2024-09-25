@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import useGlobalStore from "@/utils/store";
+import { FcGoogle } from "react-icons/fc";
+import SignInWithGoogle from "@/firebase/auth/signInWithGoogle";
 
  
 const formSchema = z.object({
@@ -76,6 +78,15 @@ export default function UserSignUp() {
 
     }
     
+    const handleLogInGoogle = async () => {
+        const { result, error } = await SignInWithGoogle();
+        if (result) {
+          return router.push('/favorite-genres');
+        } else {
+          console.error('Error signing in with Google:', error);
+          return router.push('/');
+        }
+    }
  
     return (
         <main className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-black">
@@ -142,6 +153,11 @@ export default function UserSignUp() {
                             type="submit"
                             >Sign up</Button>
                     </form>
+                    <Button className="w-full flex gap-2 mt-4" variant="secondary" onClick={handleLogInGoogle}>
+                        Google
+                        <FcGoogle className="text-lg"/>
+                    </Button>
+                    
                     <h2 className="text-sm pt-4 text-center">Already registered?
                     <Link href='/' className='font-semibold ml-1 underline'>Log in</Link>
                     </h2>

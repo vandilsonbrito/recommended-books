@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useAuthContext } from "@/context/AuthContext";
 import { MenuIcon } from "lucide-react";
@@ -6,6 +7,8 @@ import Link from "next/link";
 export default function UserNav() {
 
     const { userAuth, userDB, logout } = useAuthContext();
+    const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_AUTH;
+
 
     return (
         <DropdownMenu>
@@ -31,21 +34,38 @@ export default function UserNav() {
                     </>
                 }
 
-                <DropdownMenuItem>
-                    <Link href="/my-favorite-books" className="w-full">My Favorites</Link>
-                </DropdownMenuItem>
+                {
+                    userAuth
+                    ?
+                        <DropdownMenuItem>
+                            <Link href="/my-favorite-books" className="w-full">My Favorites</Link>
+                        </DropdownMenuItem>
+                    : 
+                        <></>
+                }
+
+                {
+                    userAuth?.uid === ADMIN_UID 
+                    ?
+                        <DropdownMenuItem>
+                            <Link href="/admin" className="w-full">Add Book</Link>
+                        </DropdownMenuItem>
+                    : 
+                        <></>
+                }
 
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>
                     {
-                        userAuth ?
-                            <>
-                                <Link href="/" className="w-full" onClick={() => logout()}>Log out</Link>
-                            </>
-                                :
-                            <>
+                        userAuth 
+                            ?
+                            <Button asChild>
+                                <Link href="" className="w-full" onClick={() => logout()}>Log out</Link>
+                            </Button>
+                            :
+                            <Button asChild>
                                 <Link href="/" className="w-full">Sign in</Link>
-                            </>
+                            </Button>
                     }
                 </DropdownMenuItem>
             </DropdownMenuContent>

@@ -129,7 +129,7 @@ export default function UserSignUp() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                <Input type="password" placeholder="passowrd" {...field} className="py-5" disabled={loadUser}/>
+                                <Input type="password" placeholder="password" {...field} className="py-5" disabled={loadUser}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

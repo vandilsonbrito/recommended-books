@@ -134,7 +134,7 @@ export default function Home() {
                         <FormItem>
                           <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="passowrd" {...field} className="py-5" disabled={wasLoginButtonClicked}/>
+                            <Input type="password" placeholder="password" {...field} className="py-5" disabled={wasLoginButtonClicked}/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>

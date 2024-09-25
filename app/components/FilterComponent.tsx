@@ -20,10 +20,10 @@ export default function FilterComponent() {
 
 
     React.useEffect(() => {
-        if(userDB && userDB.preferences){
+        if(userDB?.preferences && userSelectedGenres.length === 0){
             (userDB.preferences).map((genre) => addUserSelectedGenres([genre]));
         }
-    }, [addUserSelectedGenres, userDB]);
+    }, [userSelectedGenres.length === 0, userDB]);
 
 
     return (

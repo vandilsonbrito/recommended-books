@@ -6,6 +6,7 @@ import { auth } from '@/firebase/firebaseAuthConfig';
 import { database } from '@/firebase/firebaseDBConfig';
 import { onValue, ref } from 'firebase/database';
 import { Database } from '@/utils/interfaces';
+import { useRouter } from "next/navigation";
 
 interface AuthContextProviderProps {
     children: ReactNode;
@@ -19,6 +20,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
     const [authLoading, setAuthLoading] = useState<boolean>(true);
     const [DBLoading, setDBLoading] = useState<boolean>(true);
     const [userDB, setUserDB] = useState<Database | null>(null);
+    const router = useRouter();
      
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (authUserCredentials: User | null) => {
@@ -39,15 +41,15 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
     }, [userAuth])
 
     async function logout() {
-        let result = null,
-        error = null;
+        let error = null;
         try {
-            result = await signOut(auth);
+            await signOut(auth);
+            router.push('/');
         }
         catch(e) {
             error = e;
         }
-        return { result, error };
+        return { error };
     }
 
     return (

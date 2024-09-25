@@ -9,6 +9,8 @@ export default function UserNav() {
     const { userAuth, userDB, logout } = useAuthContext();
     const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_AUTH;
 
+    const userName = userAuth?.displayName || userDB?.username || '';
+    console.log("User", userAuth);
 
     return (
         <DropdownMenu>
@@ -19,7 +21,7 @@ export default function UserNav() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                         src={ 
-                            /* user?.picture ?? */ "https://ih1.redbubble.net/image.1380092756.9137/raf,360x360,075,t,fafafa:ca443f4786.jpg"
+                            userAuth?.photoURL ?? "https://ih1.redbubble.net/image.1380092756.9137/raf,360x360,075,t,fafafa:ca443f4786.jpg"
                          } 
                         alt="" 
                         className="rounded-full h-8 w-8 hidden lg:block"    
@@ -27,12 +29,12 @@ export default function UserNav() {
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[200px]">
-                { userDB && 
+              
                     <>
-                        <p className="py-1 px-2">{`Olá, ${userDB.username}`}</p>
+                        <p className="py-1 px-2">{`Olá, ${userName}`}</p>
                         <DropdownMenuSeparator/>
                     </>
-                }
+                
 
                 {
                     userAuth

@@ -1,0 +1,62 @@
+{
+    "LogInPage": {
+        "title": "Hello, Welcome Back.",
+        "password": "Password",
+        "message": "Don&apos;t have an account?",
+        "errorMessage1": "Invalid email and/or password.",
+        "errorMessage2": "Blocked due to many invalid requests. Try again later."
+    },
+    "SignUpPage": {
+        "title": "Sign up",
+        "name": "Name",
+        "password": "Password",
+        "message": "Already registered?",
+        "errorMessage1": "Email already registered."
+    },
+    "Header": {
+        "title": "The best recommended books for you"
+    },
+    "UserNav": {
+        "greeting": "Hello, ",
+        "pageName": "My Favorites"
+    },
+    "Footer": {
+        "text": "Developed by "
+    },
+    "FavoriteGenresPage": {
+        "h1": "Please tell us your favorite genre",
+        "genres": {
+            "genre1": "Self-development",
+            "genre2": "Mindset",
+            "genre3": "Scientific",
+            "genre4": "Biography",
+            "genre5": "Health",
+            "genre6": "Success",
+            "genre7": "Languages",
+            "genre8": "Finance",
+            "genre9": "Software-development",
+            "genre10": "Marketing",
+            "genre11": "Communication"
+        },
+        "button": "Save"
+    },
+    "FavoriteBooksPage": {
+        "h1": "Your favorite books", 
+        "error-message": "There is no favorite book yet.",
+        "author": "Author",
+        "rating": "Rating",
+        "outOf": "out of",
+        "buyBtn": "Buy here",
+        "userNotFoundMessage": "You need to "
+    },
+    "BooksPage": {
+        "title": "The best recommended books for you", 
+        "noFilterMessage": "Based on your Preferences",
+        "filter": "Filter",
+        "author": "Author",
+        "genres": "Genres",
+        "rating": "Rating",
+        "outOf": "out of",
+        "userNotFoundMessage": "You need to "
+    }
+}

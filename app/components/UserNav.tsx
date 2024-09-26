@@ -1,16 +1,20 @@
+'use client';
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useAuthContext } from "@/context/AuthContext";
 import { MenuIcon } from "lucide-react";
-import Link from "next/link";
- 
-export default function UserNav() {
+import { Link } from "../../navigation";
+import { useTranslations } from 'next-intl';
 
+ 
+export default function UserNav() { 
+
+    const t = useTranslations('UserNav');
     const { userAuth, userDB, logout } = useAuthContext();
     const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_AUTH;
 
     const userName = userAuth?.displayName || userDB?.username || '';
-    console.log("User", userAuth);
+
 
     return (
         <DropdownMenu>
@@ -31,7 +35,7 @@ export default function UserNav() {
             <DropdownMenuContent align="end" className="w-[200px]">
               
                     <>
-                        <p className="py-1 px-2">{`Olá, ${userName}`}</p>
+                        <p className="py-1 px-2">{`${t("greeting")} ${userName}`}</p>
                         <DropdownMenuSeparator/>
                     </>
                 
@@ -40,7 +44,7 @@ export default function UserNav() {
                     userAuth
                     ?
                         <DropdownMenuItem>
-                            <Link href="/my-favorite-books" className="w-full">My Favorites</Link>
+                            <Link href="/my-favorite-books" className="w-full">{t("pageName")}</Link>
                         </DropdownMenuItem>
                     : 
                         <></>

@@ -1,0 +1,60 @@
+{
+    "LogInPage": {
+        "title": "Olá, Bem-vindo de Volta.",
+        "password": "Senha",
+        "message": "Não tem uma conta?"
+    },
+    "SignUpPage": {
+        "title": "Cadastre-se",
+        "name": "Nome",
+        "password": "Senha",
+        "message": "Já possui cadastro?",
+        "errorMessage1": "Email já cadastrado."
+    },
+    "Header": {
+        "title": "As melhores recomendações de livros para você"
+    },
+    "UserNav": {
+        "greeting": "Olá, ",
+        "pageName": "Meus Favoritos"
+    },
+    "Footer": {
+        "text": "Desenvolvido por "
+    },
+    "FavoriteGenresPage": {
+        "h1": "Por favor nos diga seus gêneros favoritos",
+        "genres": {
+            "genre1": "Desenvolvimento-Pessoal",
+            "genre2": "Mentalidade",
+            "genre3": "Científico",
+            "genre4": "Biografia",
+            "genre5": "Saúde",
+            "genre6": "Sucesso",
+            "genre7": "Idiomas",
+            "genre8": "Finanças",
+            "genre9": "Desenvolvimento-Software",
+            "genre10": "Marketing",
+            "genre11": "Comunicação"
+        },
+        "button": "Salvar"
+    },
+    "FavoriteBooksPage": {
+        "h1": "Seus livros favoritos",
+        "error-message": "Você não tem livros favoritados ainda.",
+        "author": "Autor(a)",
+        "rating": "Avaliação",
+        "outOf": "de ",
+        "buyBtn": "Comprar",
+        "userNotFoundMessage": "Você precisa fazer "
+    },
+    "BooksPage": {
+        "title": "As melhores recomendações de livros para você",
+        "noFilterMessage": "Baseado nos seus gêneros favoritos",
+        "filter": "Filtrar",
+        "author": "Autor(a)",
+        "genres": "Gêneros",
+        "rating": "Avaliação",
+        "outOf": "de ",
+        "userNotFoundMessage": "Você precisa fazer "
+    }
+}

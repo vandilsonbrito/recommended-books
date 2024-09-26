@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SignUp from "@/firebase/auth/signUp";
-import { useRouter } from "next/navigation";
+import { useRouter } from "../../../navigation";
 import Image from "next/image";
-import Logo from '../../public/logo.png';
+import Logo from '../../../public/logo.png';
 
 import {
   Form,
@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import useGlobalStore from "@/utils/store";
 import { FcGoogle } from "react-icons/fc";
 import SignInWithGoogle from "@/firebase/auth/signInWithGoogle";
+import { useTranslations } from 'next-intl';
 
  
 const formSchema = z.object({
@@ -40,6 +41,7 @@ export default function UserSignUp() {
     const { userSelectedGenres, removeUserSelectedGenres, setUserSignedUp } = useGlobalStore();
     const [errorMessage, setErrorMessage] = useState('');
     const [loadUser, setLoadUser] = useState(false);
+    const t = useTranslations('SignUpPage');
 
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -64,7 +66,7 @@ export default function UserSignUp() {
 
         if(error) {
             if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/email-already-in-use'){
-                setErrorMessage('Email already registered.');
+                setErrorMessage(t("errorMessage1"));
                 setLoadUser(false);
             }
             return console.log(error);
@@ -106,7 +108,7 @@ export default function UserSignUp() {
                         <p className="loader"></p>
                     </div>
 
-                    <h1 className="font-medium text-xl pb-6 text-center">Sign up</h1>
+                    <h1 className="font-medium text-xl pb-6 text-center">{t("title")}</h1>
                     <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-4"
@@ -116,7 +118,7 @@ export default function UserSignUp() {
                             name="name"
                             render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>{t("name")}</FormLabel>
                                 <FormControl>
                                 <Input type="text" placeholder="name" {...field} className="py-5" disabled={loadUser}/>
                                 </FormControl>
@@ -142,7 +144,7 @@ export default function UserSignUp() {
                             name="password"
                             render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel>{t("password")}</FormLabel>
                                 <FormControl>
                                 <Input type="password" placeholder="password" {...field} className="py-5" disabled={loadUser}/>
                                 </FormControl>
@@ -162,7 +164,7 @@ export default function UserSignUp() {
                         <FcGoogle className="text-lg"/>
                     </Button>
                     
-                    <h2 className="text-sm pt-4 text-center">Already registered?
+                    <h2 className="text-sm pt-4 text-center">{t("message")}
                     <Link href='/' className='font-semibold ml-1 underline'>Log in</Link>
                     </h2>
                 </Form>

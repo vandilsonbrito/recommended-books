@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import { addBooksToDB } from "@/db/setDB"
 import { useAuthContext } from "@/context/AuthContext"
-import Header from "../components/Header"
+import Header from "../../components/Header"
 
 
 const formSchema = z.object({

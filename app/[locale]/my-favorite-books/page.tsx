@@ -1,14 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { database } from '../../firebase/firebaseDBConfig'; // Ajuste o caminho conforme necessário
+import { database } from '../../../firebase/firebaseDBConfig'; // Ajuste o caminho conforme necessário
 import { ref, onValue, off } from "firebase/database";
 import { BooksDataType } from '@/utils/interfaces';
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import Image from 'next/image';
 /* import Link from 'next/link';
 import { Button } from '@/components/ui/button'; */
-import ScrollToTop from '../components/ScrollToTop';
+import ScrollToTop from '../../components/ScrollToTop';
 import { MdOutlineStarPurple500, MdOutlineStarHalf } from "react-icons/md";
 import { IoIosStar, IoIosStarOutline } from "react-icons/io";
 import {
@@ -19,14 +19,15 @@ import {
 import { useAuthContext } from "@/context/AuthContext";
 import Link from 'next/link';
 import useGlobalStore from '@/utils/store';
-import Footer from '../components/Footer';
-import CardSkeleton from '../components/CardSkeleton';
+import Footer from '../../components/Footer';
+import CardSkeleton from '../../components/CardSkeleton';
 import { Button } from '@/components/ui/button';
 import { addUserSelectedDataToDB } from '@/db/setDB';
-
+import { useTranslations } from 'next-intl';
 
 export default function Books() {
 
+    const t = useTranslations('FavoriteBooksPage');
     const { userAuth, DBLoading, userDB } = useAuthContext();
     const { removeUserFavoriteBooks, addUserFavoriteBooks, userFavoriteBooks } = useGlobalStore();
 
@@ -135,7 +136,7 @@ export default function Books() {
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />
-        <h1 className="pt-8 text-center md:text-xl font-medium border-b pb-4 px-8 md:px-12 lg:px-14 xl:px-36">Your favorite books</h1>
+        <h1 className="pt-8 text-center md:text-xl font-medium border-b pb-4 px-8 md:px-12 lg:px-14 xl:px-36">{t("h1")}</h1>
         {
           userAuth ? (
               <main className="w-full h-full flex flex-col justify-center items-center text-xl py-8 bg-white px-8 md:px-12 lg:px-14">
@@ -194,7 +195,7 @@ export default function Books() {
                                                 <div className="w-[249px] h-[190px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
                                                     <div className="text-sm my-1 font-medium">
                                                         <h2 className='text-base font-semibold line-clamp-2'>{book.title}</h2>
-                                                        <p className='py-1'>Author: {book.author}</p>
+                                                        <p className='py-1'>{t("author")}: {book.author}</p>
     
                                                         <HoverCard>
                                                             <HoverCardTrigger>
@@ -205,7 +206,7 @@ export default function Books() {
                                                                 </div>
                                                             </HoverCardTrigger>
                                                             <HoverCardContent>
-                                                                <p>Rating: <strong>{book.rating}</strong> out of <strong>5</strong></p>
+                                                                <p>{t("rating")}: <strong>{book.rating}</strong> {t("outOf")} <strong>5</strong></p>
                                                             </HoverCardContent>
                                                         </HoverCard>
                                                     </div>
@@ -217,7 +218,7 @@ export default function Books() {
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                         >
-                                                            Buy Here
+                                                            {t("buyBtn")}
                                                         </Link>
                                                     </Button> 	
     
@@ -229,7 +230,7 @@ export default function Books() {
                                 :
                                 (
                                     <div className="w-full h-full flex flex-col justify-center items-center text-base">
-                                        <p>There is no favorite book yet.</p>
+                                        <p>{t("error-message")}</p>
                                     </div>
                                 )
                             )
@@ -241,7 +242,7 @@ export default function Books() {
           : 
           (
             <div className="w-full h-svh flex flex-col items-center justify-center">
-                <p>You need to <Link href="/" className='underline'>sign in</Link>.</p>
+                <p>{t("userNotFoundMessage")} <Link href="/" className='underline'>sign in</Link>.</p>
             </div>
           )
         }

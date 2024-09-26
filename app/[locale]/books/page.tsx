@@ -1,14 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { database } from '../../firebase/firebaseDBConfig'; // Ajuste o caminho conforme necessário
+import { database } from '../../../firebase/firebaseDBConfig'; // Ajuste o caminho conforme necessário
 import { ref, onValue, off } from "firebase/database";
 import { BooksDataType } from '@/utils/interfaces';
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import Image from 'next/image';
 /* import Link from 'next/link';
 import { Button } from '@/components/ui/button'; */
-import ScrollToTop from '../components/ScrollToTop';
+import ScrollToTop from '../../components/ScrollToTop';
 import { MdOutlineStarPurple500, MdOutlineStarHalf } from "react-icons/md";
 import { IoIosStar, IoIosStarOutline } from "react-icons/io";
 import {
@@ -18,15 +18,17 @@ import {
 } from "@/components/ui/hover-card";
 import { useAuthContext } from "@/context/AuthContext";
 import Link from 'next/link';
-import FilterComponent from '../components/FilterComponent';
+import FilterComponent from '../../components/FilterComponent';
 import useGlobalStore from '@/utils/store';
-import Footer from '../components/Footer';
-import CardSkeleton from '../components/CardSkeleton';
+import Footer from '../../components/Footer';
+import CardSkeleton from '../../components/CardSkeleton';
 import { addUserSelectedDataToDB } from '@/db/setDB';
+import { useTranslations } from 'next-intl';
 
 
 export default function Books() {
 
+    const t = useTranslations('BooksPage');
     const { userAuth, userDB } = useAuthContext();
     const { userSelectedGenres, addUserFavoriteBooks, removeUserFavoriteBooks, userFavoriteBooks } = useGlobalStore();
 
@@ -60,9 +62,10 @@ export default function Books() {
         else if(userDB && userDB.preferences && (userDB.preferences).length > 0) {
           selectedBooks = booksData.filter(book => (userDB.preferences).some(genre => book.genre.includes(genre)));  
         }
-
+        
         selectedBooks.length > 0 ? setFilteredBooks(selectedBooks) : setFilteredBooks(booksData);
     }, [booksData, userDB, userSelectedGenres]);
+
 
     // Display rating stars
     const displayStarsRating = useCallback(() => {
@@ -103,16 +106,16 @@ export default function Books() {
       if(userAuth?.uid && userDB?.favorites && userFavoriteBooks.length === 0) {
           
             addUserFavoriteBooks(userDB.favorites);
-            console.log("Está logado e Tem favoritos SOMENTE no DB");  
+           /*  console.log("Está logado e Tem favoritos SOMENTE no DB");  */ 
       }
     }, [userAuth?.uid, userDB]);
 
     // When logged in and if there is/are favorite(s) local data, SET to DB. When local data is now empty (had data) and there is data in DB, so clean DB
     useEffect(() => {
-      console.log("userFavoriteBooks", userFavoriteBooks)
+
         if(userAuth?.uid){
             if(userFavoriteBooks.length > 0) {
-                console.log("Colocando userFavoriteBooks no DB", userFavoriteBooks);
+                /* console.log("Colocando userFavoriteBooks no DB", userFavoriteBooks); */
                 
                 const userSelectedFavoritesData = { userData: userFavoriteBooks };
                 addUserSelectedDataToDB(userSelectedFavoritesData, userAuth.uid, 'favorites');
@@ -132,7 +135,6 @@ export default function Books() {
     useEffect(() => {
         
       const allFavoriteCheckInputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input[type="checkbox"]');
-      console.log("allFavoriteCheckInputs", allFavoriteCheckInputs)
 
       if (userDB?.favorites) {
 
@@ -152,7 +154,7 @@ export default function Books() {
     return (
       <div className='w-full h-full min-h-screen'>
         <Header />
-        <h1 className="pt-8 text-center font-medium sm:hidden">The best recommended books for you</h1>
+        <h1 className="pt-8 px-4 text-center font-medium sm:hidden">{t("title")}</h1>
         {
           userAuth ? (
               <main className="w-full h-full flex flex-col justify-center items-center text-xl py-8 bg-white px-8 md:px-12 lg:px-14">
@@ -201,7 +203,7 @@ export default function Books() {
                                           <div className="w-[249px] h-[150px] border-[1px] px-3 py-2 pb-3 rounded-b-md flex flex-col justify-between">
                                               <div className="text-sm my-1 font-medium">
                                                   <h2 className='text-base font-semibold line-clamp-2'>{book.title}</h2>
-                                                  <p className='py-1'>Author: {book.author}</p>
+                                                  <p className='py-1'>{t("author")}: {book.author}</p>
 
                                                   <HoverCard>
                                                       <HoverCardTrigger>
@@ -212,7 +214,7 @@ export default function Books() {
                                                           </div>
                                                       </HoverCardTrigger>
                                                       <HoverCardContent>
-                                                          <p>Rating: <strong>{book.rating}</strong> out of <strong>5</strong></p>
+                                                          <p>{t("rating")}: <strong>{book.rating}</strong> {t("outOf")} <strong>5</strong></p>
                                                       </HoverCardContent>
                                                   </HoverCard>
                                               </div>

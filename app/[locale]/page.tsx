@@ -4,12 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import SignIn from "@/firebase/auth/signIn";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "../../navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Logo from '../public/logo.png';
+import Logo from '../../public/logo.png';
 import { FcGoogle } from "react-icons/fc";
 import {
   Form,
@@ -23,6 +22,7 @@ import {
 import { useAuthContext } from "@/context/AuthContext";
 import useGlobalStore from "@/utils/store";
 import SignInWithGoogle from "@/firebase/auth/signInWithGoogle";
+import { useTranslations } from 'next-intl';
  
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email"}),
@@ -33,8 +33,9 @@ const formSchema = z.object({
  
 export default function Home() {
 
-    const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
+    const t = useTranslations('LogInPage');
     const router = useRouter();
+    const { userSelectedGenres, removeUserSelectedGenres } = useGlobalStore();
     const [errorMessage, setErrorMessage] = useState(0);
     const [wasLoginButtonClicked, setWasLoginButtonClicked] = useState(false);
     const [loadUser, setLoadUser] = useState(false);
@@ -103,6 +104,7 @@ export default function Home() {
         return router.push('/');
       }
     }
+
  
     return (
       <main className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-black">
@@ -118,7 +120,7 @@ export default function Home() {
                       <p className="loader"></p>
                   </div>
 
-                  <h1 className="font-medium text-xl pb-6">Hello. Welcome back!</h1>
+                  <h1 className="font-medium text-xl pb-6">{t("title")}</h1>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-5"
@@ -141,7 +143,7 @@ export default function Home() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t("password")}</FormLabel>
                           <FormControl>
                             <Input type="password" placeholder="password" {...field} className="py-5" disabled={wasLoginButtonClicked}/>
                           </FormControl>
@@ -149,17 +151,17 @@ export default function Home() {
                         </FormItem>
                       )}
                     />
-                    { errorMessage === 1 && <p className="text-red-600">Invalid email and/or password.</p> || errorMessage === 2 && <p className="text-red-600">Blocked due to many invalid requests. Try again later.</p> }
+                    { errorMessage === 1 && <p className="text-red-600">{t("errorMessage1")}</p> || errorMessage === 2 && <p className="text-red-600">{t("errorMessage2")}</p> }
                     <Button
                       className="w-full py-5"
                       type="submit"
-                      >Log in</Button>
+                      >Sign in</Button>
                   </form>
                   <Button className="w-full flex gap-2 mt-4" variant="secondary" onClick={handleLogInGoogle}>
                       Google
                       <FcGoogle className="text-lg"/>
                   </Button>
-                  <h2 className="text-sm pt-4 text-center">Don&apos;t have an account?
+                  <h2 className="text-sm pt-4 text-center">{t("message")}
                     <Link href='/sign-up' className='font-semibold ml-1 underline'>Sign up</Link>
                   </h2>
               </Form>

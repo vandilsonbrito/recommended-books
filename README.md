@@ -21,8 +21,7 @@
 
 Aprendi a criar autenticação e usar um banco de dados para armazenamento de informações do usuário, tudo isso usando o Firebase, um servicço de Backend as a Service (BaaS).
 Foi minha primeira experiência usando a biblioteca Shadcn-ui com componentes prontos e facilita/otimiza muito na construção de aplicações.
-Foi um grande aprendizado fazer uso pela primeira vez de metodologias ágeis como Kanban e Scrum, foi criado um projeto na seção 'Github Projects': https://github.com/users/vandilsonbrito/projects/1/views/1?pane=info&statusUpdateId=52741
-
+Foi um grande aprendizado fazer uso pela primeira vez de metodologias ágeis como Kanban e Scrum, foi criado um projeto na seção 'Github Projects': [link-kanban-board](https://github.com/users/vandilsonbrito/projects/1/views/1?pane=info&statusUpdateId=52741)
 <h2>Exibition</h2>
 
 

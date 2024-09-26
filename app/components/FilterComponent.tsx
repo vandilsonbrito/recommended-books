@@ -25,10 +25,19 @@ export default function FilterComponent() {
         }
     }, [userSelectedGenres.length === 0, userDB]);
 
+    React.useEffect(() => {
+        let count: number = 0;
+        userSelectedGenres.map((item) => {
+            userDB?.preferences.includes(item) ? count++ : ''
+        });
+    
+        count === userSelectedGenres.length ? setIsBasedOnPreferences(true) : setIsBasedOnPreferences(false);
+    }, [userSelectedGenres, userDB?.preferences]);
+
 
     return (
         <section className={`w-full h-full pt-5 pb-3 flex ${userSelectedGenres.length === 0 ? 'justify-between' : 'justify-end'} items-center xl:px-[5.5rem] border-b`}>
-            { userSelectedGenres.length === 0 && <p className="w-1/2 text-base sm:text-base">Based on your Preferences</p> }
+            { isBasedOnPreferences && <p className="w-full text-base sm:text-base text-left">{t("noFilterMessage")}</p> }
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline">Filter</Button>

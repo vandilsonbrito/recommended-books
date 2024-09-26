@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Recommended Books - Recomendação de Livros
 
-## Getting Started
+- Site de recomendação dos melhores livros com foco em desenvolvimento pessoal. 
+- Construído com com React.js, TypeScript e Next.js e usando Firebase para Auth e Database.
+- Conta com autenticação, seleção de gêneros favoritos, possibilidade de filtrar gêneros e favoritar livros.
+- Possui funcionalidade de mudar de idioma (PT e EN) utilizando o conceito de i18n.
 
-First, run the development server:
+<h2>Technologies</h2>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- React.js
+- Next.js
+- Tailwind CSS
+- TypeScript
+- Firebase
+- Shadcn-ui
+- Zustand
+- next-intl
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<h2>Acquired Experience</h2>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Aprendi a criar autenticação e usar um banco de dados para armazenamento de informações do usuário, tudo isso usando o Firebase, um servicço de Backend as a Service (BaaS).
+Foi minha primeira experiência usando a biblioteca Shadcn-ui com componentes prontos e facilita/otimiza muito na construção de aplicações
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<h2>Exibition</h2>
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+![recommend-books](https://github.com/user-attachments/assets/57a87e55-544e-47ab-b7cd-4e37d0e1e2a8)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<h2>Demo</h2>
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[recommended-books](https://recommended-books-by-vandilson.vercel.app)

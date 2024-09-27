@@ -1,6 +1,6 @@
 # Recommended Books - Recomendação de Livros
 
-- Site de recomendação dos melhores livros com foco em desenvolvimento pessoal. 
+- Site de recomendação dos melhores livros com foco em desenvolvimento pessoal e aprendizagem. 
 - Construído com com React.js, TypeScript e Next.js e usando Firebase para Auth e Database.
 - Conta com autenticação, seleção de gêneros favoritos, possibilidade de filtrar gêneros e favoritar livros.
 - Possui funcionalidade de mudar de idioma (PT e EN) utilizando o conceito de i18n.

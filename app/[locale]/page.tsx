@@ -77,14 +77,18 @@ export default function Home() {
         setWasLoginButtonClicked(true);
         setErrorMessage(0);
         if(error) {
-          if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/invalid-credential') {
-            setErrorMessage(1);
-            setWasLoginButtonClicked(false);
-          }
-          else if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/too-many-requests') {
-            setErrorMessage(2);
-            setWasLoginButtonClicked(false);
-          }
+            if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/invalid-credential') {
+              setErrorMessage(1);
+              setWasLoginButtonClicked(false);
+            }
+            else if(error && typeof error === 'object' && 'code' in error && error.code === 'auth/too-many-requests') {
+              setErrorMessage(2);
+              setWasLoginButtonClicked(false);
+            }
+            else {
+              setErrorMessage(3);
+              setWasLoginButtonClicked(false);
+            }
         }
         else {
           setLoadUser(true);
@@ -151,7 +155,9 @@ export default function Home() {
                         </FormItem>
                       )}
                     />
-                    { errorMessage === 1 && <p className="text-red-600">{t("errorMessage1")}</p> || errorMessage === 2 && <p className="text-red-600">{t("errorMessage2")}</p> }
+                    { 
+                      errorMessage === 1 && <p className="text-red-600">{t("errorMessage1")}</p> || errorMessage === 2 && <p className="text-red-600">{t("errorMessage2")}</p> || errorMessage === 3 && <p className="text-red-600">Error</p>
+                    }
                     <Button
                       className="w-full py-5"
                       type="submit"

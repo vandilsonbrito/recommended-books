@@ -2,7 +2,9 @@
     "LogInPage": {
         "title": "Olá, Bem-vindo de Volta.",
         "password": "Senha",
-        "message": "Não tem uma conta?"
+        "message": "Não tem uma conta?",
+        "errorMessage1": "Email e/ou senha inválido(s).",
+        "errorMessage2": "Muitas tentativas. Por favor, tente novamente mais tarde."
     },
     "SignUpPage": {
         "title": "Cadastre-se",
